@@ -59,7 +59,7 @@ infantRouter.put("/temperatura/:id", checkToken, asyncMiddleware(async (req, res
     const rightNow = new Date();
     const today = new Date(rightNow.getFullYear(), rightNow.getMonth(), rightNow.getDate());
     const infant = await Infant.findById(req.params.id);
-    const repetit = infant.temperatures.some(t => t.dia = today.getTime());
+    const repetit = infant.temperatures.some(t => t.dia == today.getTime());
     if (repetit) {
         return next({
             status: 403,
