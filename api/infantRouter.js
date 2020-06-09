@@ -66,7 +66,7 @@ infantRouter.put("/temperatura/:id", checkToken, asyncMiddleware(async (req, res
     if (repetit) {
         return next({
             status: 403,
-            message: `${utc} Ja s'ha pres la temperatura avui.`
+            message: `${utc}, ${today}: Ja s'ha pres la temperatura avui.`
         });
     }
     infant.temperatures.push({ dia: utc, temperatura: temp });
