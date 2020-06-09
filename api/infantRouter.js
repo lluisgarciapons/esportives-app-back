@@ -58,15 +58,18 @@ infantRouter.put("/temperatura/:id", checkToken, asyncMiddleware(async (req, res
     const { temp } = req.body;
     const rightNow = new Date();
     const today = new Date(rightNow.getFullYear(), rightNow.getMonth(), rightNow.getDate());
+    const localTime = today.getTime();
+    const localOffset = today.getTimezoneOffset() * 60000;
+    const utc = localTime + localOffset;
     const infant = await Infant.findById(req.params.id);
-    const repetit = infant.temperatures.some(t => t.dia == today.getTime());
+    const repetit = infant.temperatures.some(t => t.dia == utc);
     if (repetit) {
         return next({
             status: 403,
-            message: `${today} Ja s'ha pres la temperatura avui.`
+            message: `${utc} Ja s'ha pres la temperatura avui.`
         });
     }
-    infant.temperatures.push({ dia: today.getTime(), temperatura: temp });
+    infant.temperatures.push({ dia: utc, temperatura: temp });
     const updatedInfant = await infant.save();
     return res.json({
         success: true,
