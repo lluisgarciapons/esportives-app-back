@@ -4,7 +4,7 @@ const InfantSchema = new mongoose.Schema({
     nom: { type: String },
     nomResponsable: { type: String },
     DNIResponsable: { type: String },
-    naixement: { type: Date },
+    naixement: { type: String },
     curs: { type: String },
     escola: { type: String },
     telefon: { type: Number },

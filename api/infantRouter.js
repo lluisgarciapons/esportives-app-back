@@ -17,7 +17,7 @@ infantRouter.post("/", checkToken, asyncMiddleware(async (req, res, next) => {
     if (infant) {
         return next({
             status: 403,
-            message: "Aquest infant ja ha estat introduït"
+            message: "Aquest infant ja ha estat introduït!"
         });
     }
 
@@ -74,6 +74,22 @@ infantRouter.put("/temperatura/:id", checkToken, asyncMiddleware(async (req, res
     return res.json({
         success: true,
         infant: updatedInfant
+    });
+}));
+
+infantRouter.put("/update/:id", checkToken, asyncMiddleware(async (req, res, next) => {
+    const { infant } = req.body;
+    const foundInfant = await Infant.findOneAndUpdate({ _id: req.params.id }, infant, { new: true, upsert: true, setDefaultsOnInsert: true });
+    if (!foundInfant) {
+        return next({
+            status: 400,
+            message: "Something wrong happened"
+        });
+    }
+
+    return res.json({
+        success: true,
+        infant: foundInfant
     });
 }));
 
